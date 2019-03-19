@@ -1,0 +1,136 @@
+#What i have done is try to get a scrape of all the urls currently  this scrape returns ~ 900 items, as I learn to scrape more costco urls I will add to this hopefully, there is definitely a smarter way of doing this but currently I am too much of a noob to solve it possible a URL.csv or text file is needed
+import requests
+from bs4 import BeautifulSoup
+import csv
+
+#List of different pages
+
+url_list = ['https://www.costco.co.uk/Appliances/Small-Kitchen-Appliances/Blenders-Juicers/c/cos_2.5.1',
+            'https://www.costco.co.uk/Appliances/Small-Kitchen-Appliances/Coffee-Coffee-Capsules/c/cos_2.5.2', 
+			'https://www.costco.co.uk/c/cos_8.1.1 ',
+            'https://www.costco.co.uk/c/cos_7.1.1 ',
+            'https://www.costco.co.uk/c/cos_6.1.1 ',
+            'https://www.costco.co.uk/c/cos_5.1.1 ',
+            'https://www.costco.co.uk/c/cos_4.1.1 ',
+            'https://www.costco.co.uk/c/cos_3.1.1 ',
+            'https://www.costco.co.uk/c/cos_2.1.1 ',
+            'https://www.costco.co.uk/c/cos_1.1.1 ',
+            'https://www.costco.co.uk/c/cos_9.1.2 ',
+            'https://www.costco.co.uk/c/cos_9.1.2 ',
+            'https://www.costco.co.uk/c/cos_8.1.2 ',
+            'https://www.costco.co.uk/c/cos_7.1.2 ',
+            'https://www.costco.co.uk/c/cos_6.1.2 ',
+            'https://www.costco.co.uk/c/cos_5.1.2 ',
+            'https://www.costco.co.uk/c/cos_4.1.2 ',
+            'https://www.costco.co.uk/c/cos_3.1.2 ',
+            'https://www.costco.co.uk/c/cos_2.1.2 ',
+            'https://www.costco.co.uk/c/cos_1.1.2 ',
+            'https://www.costco.co.uk/c/cos_9.1.3 ',
+            'https://www.costco.co.uk/c/cos_8.1.3 ',
+            'https://www.costco.co.uk/c/cos_7.1.3 ',
+            'https://www.costco.co.uk/c/cos_6.1.3 ',
+            'https://www.costco.co.uk/c/cos_5.1.3 ',
+            'https://www.costco.co.uk/c/cos_4.1.3 ',
+            'https://www.costco.co.uk/c/cos_3.1.3 ',
+            'https://www.costco.co.uk/c/cos_2.1.3 ',
+            'https://www.costco.co.uk/c/cos_1.1.3 ',
+            'https://www.costco.co.uk/c/cos_9.1.4 ',
+            'https://www.costco.co.uk/c/cos_8.1.4 ',
+            'https://www.costco.co.uk/c/cos_7.1.4 ',
+            'https://www.costco.co.uk/c/cos_6.1.4 ',
+            'https://www.costco.co.uk/c/cos_5.1.4 ',
+            'https://www.costco.co.uk/c/cos_4.1.4 ',
+            'https://www.costco.co.uk/c/cos_3.1.4 ',
+            'https://www.costco.co.uk/c/cos_2.1.4 ',
+            'https://www.costco.co.uk/c/cos_1.1.4 ',
+            'https://www.costco.co.uk/c/cos_9.1.5 ',
+            'https://www.costco.co.uk/c/cos_8.1.5 ',
+            'https://www.costco.co.uk/c/cos_7.1.5 ',
+            'https://www.costco.co.uk/c/cos_6.1.5 ',
+            'https://www.costco.co.uk/c/cos_5.1.5 ',
+            'https://www.costco.co.uk/c/cos_4.1.5 ',
+            'https://www.costco.co.uk/c/cos_3.1.5 ',
+            'https://www.costco.co.uk/c/cos_2.1.5 ',
+            'https://www.costco.co.uk/c/cos_1.1.5 ',
+            'https://www.costco.co.uk/c/cos_9.1.6 ',
+            'https://www.costco.co.uk/c/cos_8.1.6 ',
+            'https://www.costco.co.uk/c/cos_7.1.6 ',
+            'https://www.costco.co.uk/c/cos_6.1.6 ',
+            'https://www.costco.co.uk/c/cos_5.1.6 ',
+            'https://www.costco.co.uk/c/cos_4.1.6 ',
+            'https://www.costco.co.uk/c/cos_3.1.6 ',
+            'https://www.costco.co.uk/c/cos_2.1.6 ',
+            'https://www.costco.co.uk/c/cos_1.1.6 ',
+            'https://www.costco.co.uk/c/cos_9.1.6 ',
+            'https://www.costco.co.uk/c/cos_8.1.6 ',
+            'https://www.costco.co.uk/c/cos_7.1.6 ',
+            'https://www.costco.co.uk/c/cos_6.1.6 ',
+            'https://www.costco.co.uk/c/cos_5.1.6 ',
+            'https://www.costco.co.uk/c/cos_4.1.6 ',
+            'https://www.costco.co.uk/c/cos_3.1.6 ',
+            'https://www.costco.co.uk/c/cos_2.1.6 ',
+            'https://www.costco.co.uk/c/cos_1.1.6 ',
+            'https://www.costco.co.uk/c/cos_9.1.7 ',
+            'https://www.costco.co.uk/c/cos_8.1.7 ',
+            'https://www.costco.co.uk/c/cos_7.1.7 ',
+            'https://www.costco.co.uk/c/cos_6.1.7 ',
+            'https://www.costco.co.uk/c/cos_5.1.7 ',
+            'https://www.costco.co.uk/c/cos_4.1.7 ',
+            'https://www.costco.co.uk/c/cos_3.1.7 ',
+            'https://www.costco.co.uk/c/cos_2.1.7 ',
+            'https://www.costco.co.uk/c/cos_1.1.7 ',
+            'https://www.costco.co.uk/c/cos_9.1.8 ',
+            'https://www.costco.co.uk/c/cos_8.1.8 ',
+            'https://www.costco.co.uk/c/cos_7.1.8 ',
+            'https://www.costco.co.uk/c/cos_6.1.8 ',
+            'https://www.costco.co.uk/c/cos_5.1.8 ',
+            'https://www.costco.co.uk/c/cos_4.1.8 ',
+            'https://www.costco.co.uk/c/cos_3.1.8 ',
+            'https://www.costco.co.uk/c/cos_2.1.8 ',
+            'https://www.costco.co.uk/c/cos_1.1.8 ',
+            'https://www.costco.co.uk/c/cos_9.1.9 ',
+            'https://www.costco.co.uk/c/cos_9.1.9 ',
+            'https://www.costco.co.uk/c/cos_8.1.9 ',
+            'https://www.costco.co.uk/c/cos_7.1.9 ',
+            'https://www.costco.co.uk/c/cos_6.1.9 ',
+            'https://www.costco.co.uk/c/cos_5.1.9 ',
+            'https://www.costco.co.uk/c/cos_4.1.9 ',
+            'https://www.costco.co.uk/c/cos_3.1.9 ',
+            'https://www.costco.co.uk/c/cos_2.1.9 ',
+            'https://www.costco.co.uk/c/cos_1.1.9 ',
+            'https://www.costco.co.uk/c/cos_9.1.10 ',
+            'https://www.costco.co.uk/c/cos_8.1.10 ',
+            'https://www.costco.co.uk/c/cos_7.1.10 ',
+            'https://www.costco.co.uk/c/cos_6.1.10 ',
+            'https://www.costco.co.uk/c/cos_5.1.10 ',
+            'https://www.costco.co.uk/c/cos_4.1.10 ',
+            'https://www.costco.co.uk/c/cos_3.1.10 ',
+            'https://www.costco.co.uk/c/cos_2.1.10 ',
+			'https://www.costco.co.uk/c/cos_9.1.1',
+			'https://www.costco.co.uk/c/cos_9.1.2',
+			'https://www.costco.co.uk/c/cos_9.1.3',
+			'https://www.costco.co.uk/c/cos_9.1.3']
+
+#CHANGE THE NAME OF YOUR VARIABLE - I have it named costco.csv but you change it to another name if you want
+with open('CostcoScrapePrice.csv', 'w') as costcowriter:
+    csv_writer = csv.writer(costcowriter)
+    csv_writer.writerow(['Product Name', 'Costco Price2', 'Product URL'])
+
+for each_url in url_list:
+    url = requests.get(each_url)
+    soup = BeautifulSoup(url.text, 'lxml')
+
+    products = soup.findAll('li', {'class':'product-item'})
+
+
+
+    for each_product in products:
+        name = each_product.find('div', {'class':'product-name-container'}).text.replace('\n', '').replace('"','')
+        price = each_product.find('span', {'class':'product-price-amount'}).text.replace('\n', '').replace('"','')
+        product_url = 'https://www.costco.co.uk' + each_product.find('a')['href'].replace('\n', '').replace('"','')
+        print([name, price, product_url])
+        #On each pass of each product, it will write to the CSV file.
+        with open('CostcoScrapePrice.csv', 'a') as costcowriter:
+            csv_writer = csv.writer(costcowriter)
+            csv_writer.writerow([name, price, product_url])
+
