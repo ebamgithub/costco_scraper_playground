@@ -1,6 +1,6 @@
 # costco_scraper_playground
 
-#About
+# About
 This is a simple program in python using requests to go to the UK version of costco's site and grab the items off of the page. 
 
 # Using Different URL's 
